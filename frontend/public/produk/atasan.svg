@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Ilustrasi atasan">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset="1" stop-color="#ffdcbd"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fb923c"/>
+      <stop offset="1" stop-color="#c2470f"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="322" cy="82" r="74" fill="#ffffff" opacity=".45"/>
+  <circle cx="68" cy="330" r="92" fill="#ffffff" opacity=".35"/>
+  <ellipse cx="200" cy="334" rx="112" ry="18" fill="#c2470f" opacity=".16"/>
+  <path d="M158 108 L110 138 L80 206 Q96 224 118 228 L138 188 L138 316 Q200 336 262 316 L262 188 L282 228 Q304 224 320 206 L290 138 L242 108 L222 136 Q200 152 178 136 Z" fill="url(#shirt)"/>
+  <path d="M178 136 L200 166 L222 136 Q210 128 200 128 Q190 128 178 136 Z" fill="#7c3014"/>
+  <path d="M200 166 L200 318" stroke="#9a3814" stroke-width="3" opacity=".65"/>
+  <circle cx="200" cy="198" r="4.5" fill="#fff" opacity=".95"/>
+  <circle cx="200" cy="238" r="4.5" fill="#fff" opacity=".95"/>
+  <circle cx="200" cy="278" r="4.5" fill="#fff" opacity=".95"/>
+  <rect x="150" y="200" width="32" height="28" rx="5" fill="#ffdcbd" opacity=".7"/>
+  <path d="M138 188 L138 316" stroke="#9a3814" stroke-width="4" opacity=".35"/>
+  <path d="M262 188 L262 316" stroke="#7c3014" stroke-width="4" opacity=".3"/>
+  <circle cx="94" cy="268" r="8" fill="#fb923c" opacity=".45"/>
+  <circle cx="320" cy="300" r="12" fill="#fb923c" opacity=".3"/>
+</svg>

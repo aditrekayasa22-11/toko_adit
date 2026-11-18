@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Ilustrasi sepatu">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eff6ff"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="shoe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="320" cy="92" r="72" fill="#ffffff" opacity=".5"/>
+  <circle cx="76" cy="322" r="86" fill="#ffffff" opacity=".35"/>
+  <ellipse cx="216" cy="306" rx="140" ry="18" fill="#1e3a8a" opacity=".16"/>
+  <path d="M82 250 Q82 214 122 206 L166 198 L200 156 Q210 144 224 152 L250 174 Q270 190 296 198 L322 206 Q348 214 348 244 L348 266 Q348 278 334 278 L100 278 Q82 278 82 258 Z" fill="url(#shoe)"/>
+  <path d="M74 276 H356 Q360 276 360 288 L360 292 Q360 304 346 304 L88 304 Q74 304 74 292 Z" fill="#f8fafc"/>
+  <path d="M74 292 H360" stroke="#cbd5e1" stroke-width="4"/>
+  <path d="M160 206 Q196 218 246 212" stroke="#bfdbfe" stroke-width="6" fill="none" stroke-linecap="round" opacity=".8"/>
+  <path d="M230 196 L268 226 L292 218" stroke="#93c5fd" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M184 180 L208 196 M196 170 L220 186 M208 160 L232 176" stroke="#e0f2fe" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="140" cy="238" r="8" fill="#93c5fd" opacity=".8"/>
+  <path d="M152 254 Q186 262 214 254" stroke="#60a5fa" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="330" cy="320" r="10" fill="#60a5fa" opacity=".4"/>
+  <circle cx="62" cy="240" r="7" fill="#93c5fd" opacity=".6"/>
+</svg>

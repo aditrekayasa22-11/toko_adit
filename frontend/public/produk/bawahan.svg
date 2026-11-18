@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Ilustrasi bawahan">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0fdf4"/>
+      <stop offset="1" stop-color="#bbf7d0"/>
+    </linearGradient>
+    <linearGradient id="denim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="326" cy="86" r="70" fill="#ffffff" opacity=".5"/>
+  <circle cx="70" cy="318" r="88" fill="#ffffff" opacity=".35"/>
+  <ellipse cx="200" cy="342" rx="100" ry="16" fill="#166534" opacity=".14"/>
+  <path d="M150 84 H250 L246 206 L230 332 H208 L200 240 L192 332 H170 L154 206 Z" fill="url(#denim)"/>
+  <rect x="148" y="84" width="104" height="26" rx="6" fill="#1e3a8a"/>
+  <rect x="162" y="82" width="7" height="32" rx="3" fill="#60a5fa" opacity=".8"/>
+  <rect x="231" y="82" width="7" height="32" rx="3" fill="#60a5fa" opacity=".8"/>
+  <circle cx="200" cy="99" r="6" fill="#dbeafe"/>
+  <path d="M160 128 Q178 148 190 130" fill="none" stroke="#93c5fd" stroke-width="3" stroke-dasharray="5 5"/>
+  <path d="M240 128 Q222 148 210 130" fill="none" stroke="#93c5fd" stroke-width="3" stroke-dasharray="5 5"/>
+  <path d="M200 110 L200 232" stroke="#93c5fd" stroke-width="2.5" stroke-dasharray="5 6" opacity=".9"/>
+  <path d="M166 222 L160 320" stroke="#93c5fd" stroke-width="2.5" stroke-dasharray="5 6" opacity=".8"/>
+  <path d="M234 222 L240 320" stroke="#93c5fd" stroke-width="2.5" stroke-dasharray="5 6" opacity=".8"/>
+  <rect x="156" y="150" width="30" height="22" rx="4" fill="#1e40af" opacity=".6"/>
+  <rect x="214" y="150" width="30" height="22" rx="4" fill="#1e40af" opacity=".6"/>
+  <circle cx="90" cy="236" r="9" fill="#34d399" opacity=".45"/>
+  <circle cx="314" cy="286" r="13" fill="#34d399" opacity=".35"/>
+</svg>
