@@ -51,8 +51,8 @@ export default function Register() {
   return (
     <AuthShell
       badge="Daftar Akun"
-      title="Buat akun Toko Adit"
-      subtitle="Daftar gratis dan nikmati kemudahan belanja di Toko Adit."
+      title="Buat akun Fashion Store"
+      subtitle="Daftar gratis dan nikmati kemudahan belanja di Fashion Store."
       footer={
         <p className="text-center text-sm text-slate-500">
           Sudah punya akun?{' '}
@@ -163,7 +163,7 @@ export default function Register() {
 
         <p className="text-center text-[11px] leading-relaxed text-slate-400">
           Dengan mendaftar, Anda menyetujui syarat dan ketentuan serta kebijakan privasi
-          Toko Adit.
+          Fashion Store.
         </p>
       </form>
     </AuthShell>

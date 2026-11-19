@@ -20,7 +20,7 @@ export default function AuthShell({ title, subtitle, children, footer, badge }) 
 
       <section className="auth-frame auth-frame-centered">
         <aside className="auth-story">
-          <Link to="/produk" className="auth-brand" aria-label="Toko Adit">
+          <Link to="/produk" className="auth-brand" aria-label="Fashion Store">
             <BrandLogo size="md" tone="inverted" tagline="Fashion & aksesoris" />
           </Link>
           <div className="auth-story-copy">
@@ -35,14 +35,14 @@ export default function AuthShell({ title, subtitle, children, footer, badge }) 
           </div>
           <div className="auth-promo-card auth-product-spotlight">
             <span className="auth-product-art"><img src="/produk/atasan.svg" alt="" /></span>
-            <span className="auth-product-copy"><span className="auth-product-overline">KOLEKSI PILIHAN</span><strong className="block text-sm">Gaya untuk setiap hari</strong><span className="mt-1 block text-xs">Temukan favorit barumu di Toko Adit.</span></span>
+            <span className="auth-product-copy"><span className="auth-product-overline">KOLEKSI PILIHAN</span><strong className="block text-sm">Gaya untuk setiap hari</strong><span className="mt-1 block text-xs">Temukan favorit barumu di Fashion Store.</span></span>
             <span className="auth-product-star" aria-hidden="true">✦</span>
           </div>
           <div className="auth-story-decoration" aria-hidden="true" />
         </aside>
 
         <div className="auth-form-panel">
-          <Link to="/produk" className="auth-mobile-brand" aria-label="Toko Adit">
+          <Link to="/produk" className="auth-mobile-brand" aria-label="Fashion Store">
             <BrandLogo size="sm" tone="inverted" />
           </Link>
           <div className="auth-form-content">
@@ -52,7 +52,7 @@ export default function AuthShell({ title, subtitle, children, footer, badge }) 
             <div className="mt-7">{children}</div>
             {footer && <div className="mt-6 border-t border-slate-100 pt-5">{footer}</div>}
           </div>
-          <p className="auth-secure-note"><BadgeCheck className="h-4 w-4" /> Akunmu aman bersama Toko Adit</p>
+          <p className="auth-secure-note"><BadgeCheck className="h-4 w-4" /> Akunmu aman bersama Fashion Store</p>
         </div>
       </section>
     </main>

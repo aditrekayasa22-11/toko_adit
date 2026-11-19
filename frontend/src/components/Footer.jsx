@@ -101,7 +101,7 @@ export default function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} Toko Adit. Semua hak cipta dilindungi.</p>
+          <p>© {new Date().getFullYear()} Fashion Store. Semua hak cipta dilindungi.</p>
           <div className="flex items-center gap-3">
             <span className="rounded-md bg-white/5 px-2 py-1 font-semibold text-slate-300">BCA</span>
             <span className="rounded-md bg-white/5 px-2 py-1 font-semibold text-slate-300">QRIS</span>

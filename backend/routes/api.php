@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\PembayaranController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/produk', [KatalogController::class, 'index']);
@@ -19,6 +20,7 @@ Route::get('/kategori', [KatalogController::class, 'kategori']);
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/pembayaran/duitku/callback', [PembayaranController::class, 'callback']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
@@ -28,6 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/statistik-saya', [PesananController::class, 'statistikSaya']);
     Route::get('/pesanan-saya', [PesananController::class, 'index']);
     Route::post('/pesanan', [PesananController::class, 'store']);
+    Route::post('/pesanan-saya/{pesanan}/pembayaran', [PembayaranController::class, 'buatInvoice']);
+    Route::post('/pesanan-saya/{pesanan}/verifikasi-pembayaran', [PembayaranController::class, 'verifikasi'])
+        ->middleware('throttle:3,1');
     Route::get('/pesanan-saya/{pesanan}', [PesananController::class, 'show']);
     Route::post('/pesanan-saya/{pesanan}/batal', [PesananController::class, 'batalkan']);
 });

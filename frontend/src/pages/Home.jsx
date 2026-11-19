@@ -85,7 +85,7 @@ export default function Home() {
         <div className="store-welcome-shape" />
         <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-rose-100"><Sparkles className="h-3.5 w-3.5" /> Koleksi pilihan Toko Adit</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-rose-100"><Sparkles className="h-3.5 w-3.5" /> Koleksi pilihan Fashion Store</span>
             <h1 className="mt-4 text-3xl font-black leading-tight tracking-tight sm:text-4xl">Tampil percaya diri,<br className="hidden sm:block" /> mulai dari gaya yang tepat.</h1>
             <p className="mt-3 max-w-xl text-sm leading-6 text-rose-50/75">Temukan fashion dan aksesori pilihan dengan pengalaman belanja yang mudah dan nyaman.</p>
           </div>
@@ -96,7 +96,7 @@ export default function Home() {
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">Dashboard</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Ringkasan katalog dan produk terbaru Toko Adit.
+            Ringkasan katalog dan produk terbaru Fashion Store.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

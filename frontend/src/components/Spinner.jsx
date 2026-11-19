@@ -15,7 +15,7 @@ export function FullPageLoader() {
       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
         <Loader2 className="h-7 w-7 animate-spin" />
       </div>
-      <p className="text-sm font-medium text-slate-500">Memuat Toko Adit...</p>
+      <p className="text-sm font-medium text-slate-500">Memuat Fashion Store...</p>
     </div>
   );
 }

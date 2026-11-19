@@ -119,6 +119,7 @@ class PesananController extends Controller
                 'ongkir' => $ongkir,
                 'total_harga' => $subtotal + $ongkir,
                 'status' => 'pending',
+                'status_pembayaran' => $data['metode_pembayaran'] === 'cod' ? 'tidak_berlaku' : 'menunggu',
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'alamat_pengiriman' => $data['alamat_pengiriman'],
                 'catatan' => $data['catatan'] ?? null,
@@ -159,6 +160,12 @@ class PesananController extends Controller
         if ($pesanan->status !== 'pending') {
             throw ValidationException::withMessages([
                 'status' => 'Pesanan hanya dapat dibatalkan saat masih menunggu konfirmasi.',
+            ]);
+        }
+
+        if ($pesanan->status_pembayaran === 'dibayar') {
+            throw ValidationException::withMessages([
+                'status' => 'Pesanan yang sudah dibayar tidak dapat dibatalkan dari halaman ini.',
             ]);
         }
 

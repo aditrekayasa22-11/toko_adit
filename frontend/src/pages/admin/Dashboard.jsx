@@ -74,7 +74,7 @@ export default function Dashboard() {
         <div className="admin-welcome-orb admin-welcome-orb-two" />
         <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-orange-100"><TrendingUp className="h-3.5 w-3.5" /> Ringkasan Toko Adit</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-orange-100"><TrendingUp className="h-3.5 w-3.5" /> Ringkasan Fashion Store</span>
             <h2 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl">Selamat datang kembali!</h2>
             <p className="mt-2 max-w-xl text-sm leading-6 text-orange-50/75">Pantau performa penjualan, kelola produk, dan ikuti aktivitas terbaru toko dalam satu tempat.</p>
           </div>
@@ -90,7 +90,7 @@ export default function Dashboard() {
             Selamat datang kembali! 👋
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Ringkasan performa toko dan aktivitas terbaru Toko Adit.
+            Ringkasan performa toko dan aktivitas terbaru Fashion Store.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

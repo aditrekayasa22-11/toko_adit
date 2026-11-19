@@ -299,7 +299,7 @@ export default function Profil() {
             </div>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Gunakan password yang kuat dan jangan bagikan data akunmu kepada siapa pun.
-              Toko Adit tidak pernah meminta password melalui chat.
+              Fashion Store tidak pernah meminta password melalui chat.
             </p>
           </div>
         </div>

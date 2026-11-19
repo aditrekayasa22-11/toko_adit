@@ -147,28 +147,28 @@ export default function AdminLayout() {
       </aside>
 
       <div className="lg:pl-72">
-        <header className="admin-header sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur-xl">
+        <header className="admin-header sticky top-0 z-20 border-b border-[#d6b66d]/25 backdrop-blur-xl">
           <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
-                className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden"
+                className="rounded-xl p-2 text-[#f1e5e7] transition hover:bg-white/10 lg:hidden"
               >
                 <Menu className="h-5 w-5" />
               </button>
               <div>
-                <h1 className="text-base font-bold text-slate-900 sm:text-lg">
-                  {titleByPath[location.pathname] || 'Admin Toko Adit'}
+                <h1 className="text-base font-extrabold tracking-tight text-[#fff8ec] sm:text-lg">
+                  {titleByPath[location.pathname] || 'Admin Fashion Store'}
                 </h1>
-                <p className="hidden text-xs text-slate-400 sm:block">{formatDate(new Date().toISOString())}</p>
+                <p className="hidden text-[10px] font-semibold tracking-wide text-[#d8bd83] sm:block">{formatDate(new Date().toISOString())}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 pl-2 pr-3">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-[10px] font-bold text-white">
+            <div className="flex items-center gap-2 rounded-full border border-[#e0c47f]/25 bg-white/[.06] py-1.5 pl-2 pr-3 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#f2dda1]/70 bg-gradient-to-br from-[#d8bb77] via-[#b78d4f] to-[#75502e] text-[10px] font-black text-[#32101f] shadow-sm">
                 {inisial}
               </span>
-              <span className="hidden text-xs font-semibold text-slate-700 sm:block">
+              <span className="hidden text-xs font-bold text-[#fff8ec] sm:block">
                 {user?.name}
               </span>
             </div>

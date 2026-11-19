@@ -148,7 +148,7 @@ export default function AdminLaporan() {
           Laporan Penjualan
         </h2>
         <p className="mt-1 text-sm text-slate-500">
-          Analisis transaksi dan total belanja pelanggan Toko Adit.
+          Analisis transaksi dan total belanja pelanggan Fashion Store.
         </p>
       </div>
 

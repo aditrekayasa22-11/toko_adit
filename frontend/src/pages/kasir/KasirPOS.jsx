@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import api, { apiError, formatDateTime, formatNumber, formatRupiah, productImage } from '../../lib/api';
+import api, { apiError, formatDate, formatDateTime, formatNumber, formatRupiah, productImage } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 import Modal from '../../components/Modal';
 import Pagination from '../../components/Pagination';
@@ -27,6 +27,12 @@ const aman = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[char]);
 
+const labelMetodePembayaran = (method) => ({
+  tunai: 'Tunai',
+  qris: 'QRIS',
+  transfer: 'Transfer Bank',
+}[method] || method || '-');
+
 function cetakStruk(sale) {
   const popup = window.open('', '_blank', 'width=420,height=720');
   if (!popup) {
@@ -34,9 +40,13 @@ function cetakStruk(sale) {
     return;
   }
   const items = sale.items || [];
-  const rows = items.map((item) => `<div class="row"><span>${aman(item.nama_produk)} × ${item.jumlah}</span><b>${formatRupiah(item.total_harga)}</b></div><div class="sub">${formatRupiah(item.harga || (item.total_harga / item.jumlah))} / pcs</div>`).join('');
+  const diskon = Number(sale.diskon_total || 0);
+  const subtotal = Number(sale.subtotal ?? (Number(sale.total_harga || 0) + diskon));
+  const totalItem = items.reduce((sum, item) => sum + Number(item.jumlah || 0), 0);
+  const metodePembayaran = labelMetodePembayaran(sale.metode_pembayaran);
+  const rows = items.map((item) => `<div class="row"><span>${aman(item.nama_produk)} × ${Number(item.jumlah || 0)}</span><b>${formatRupiah(item.total_harga)}</b></div><div class="sub">${formatRupiah(item.harga || (item.total_harga / item.jumlah))} / pcs</div>`).join('');
   popup.document.open();
-  popup.document.write(`<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Struk ${aman(sale.kode_transaksi)}</title><style>@page{size:80mm auto;margin:4mm}*{box-sizing:border-box}body{width:72mm;margin:0 auto;color:#202636;font:11px/1.45 "Courier New",monospace}.center{text-align:center}.brand{font-size:18px;font-weight:bold;letter-spacing:.08em}.brand span{color:#e85b16}.muted{color:#777;font-size:9px}.line{border:0;border-top:1px dashed #777;margin:9px 0}.row{display:flex;justify-content:space-between;gap:8px;margin-top:7px}.row span{max-width:47mm;overflow-wrap:anywhere}.sub{font-size:9px;color:#777}.total{font-size:13px;font-weight:bold}</style></head><body><div class="center"><div class="brand">TOKO <span>ADIT</span></div><div>JL. MERDEKA NO. 10 · PONOROGO</div><div class="muted">STRUK PEMBAYARAN</div></div><hr class="line"><div class="row"><span>No. Transaksi</span><b>${aman(sale.kode_transaksi)}</b></div><div class="row"><span>Tanggal</span><span>${aman(formatDateTime(sale.tanggal_transaksi))}</span></div><div class="row"><span>Kasir</span><span>${aman(sale.nama_kasir || '-')}</span></div><div class="row"><span>Pelanggan</span><span>${aman(sale.nama_pelanggan || 'Pelanggan Umum')}</span></div><hr class="line">${rows}<hr class="line">${sale.diskon_total ? `<div class="row"><span>Subtotal</span><span>${formatRupiah(sale.subtotal || (sale.total_harga + sale.diskon_total))}</span></div><div class="row"><span>Diskon</span><span>-${formatRupiah(sale.diskon_total)}</span></div>` : ''}<div class="row total"><span>TOTAL</span><b>${formatRupiah(sale.total_harga)}</b></div><div class="row"><span>Bayar (${aman((sale.metode_pembayaran || '').toUpperCase())})</span><span>${formatRupiah(sale.jumlah_bayar)}</span></div><div class="row"><span>Kembalian</span><span>${formatRupiah(sale.kembalian)}</span></div><hr class="line"><div class="center">Terima kasih telah berbelanja</div><div class="center muted">Simpan struk ini sebagai bukti pembayaran.</div><script>window.onload=()=>{window.print();window.close()}</script></body></html>`);
+  popup.document.write(`<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Struk ${aman(sale.kode_transaksi)}</title><style>@page{size:80mm auto;margin:4mm}*{box-sizing:border-box}body{width:72mm;margin:0 auto;color:#202636;font:11px/1.45 "Courier New",monospace}.center{text-align:center}.brand{font-size:18px;font-weight:bold;letter-spacing:.08em}.brand span{color:#a9713f}.muted{color:#777;font-size:9px}.line{border:0;border-top:1px dashed #777;margin:9px 0}.row{display:flex;justify-content:space-between;gap:8px;margin-top:7px}.row span{max-width:47mm;overflow-wrap:anywhere}.sub{font-size:9px;color:#777}.total{font-size:13px;font-weight:bold}.paid{font-weight:bold;letter-spacing:.12em}</style></head><body><div class="center"><img src="${window.location.origin}/logo-badge.svg" alt="Fashion Store" style="width:16mm;height:16mm;display:block;margin:0 auto 2mm;border-radius:3mm"/><div class="brand">FASHION <span>STORE</span></div><div>JL. MERDEKA NO. 10 - PONOROGO</div><div>0812-3456-7891</div><div>halo@tokokita.id</div><div class="paid">LUNAS</div><div class="muted">STRUK PEMBAYARAN</div></div><hr class="line"><div class="row"><span>No. Transaksi</span><b>${aman(sale.kode_transaksi)}</b></div><div class="row"><span>Tanggal</span><span>${aman(formatDate(sale.tanggal_transaksi))}</span></div><div class="row"><span>Kasir</span><span>${aman(sale.nama_kasir || '-')}</span></div><div class="row"><span>Pelanggan</span><span>${aman(sale.nama_pelanggan || 'Pelanggan Umum')}</span></div><hr class="line"><div class="row"><b>Detail Pembelian (${totalItem} item)</b></div>${rows}<hr class="line"><div class="row"><span>Subtotal</span><span>${formatRupiah(subtotal)}</span></div><div class="row"><span>Diskon</span><span>-${formatRupiah(diskon)}</span></div><div class="row total"><span>TOTAL</span><b>${formatRupiah(sale.total_harga)}</b></div><div class="row"><span>Metode pembayaran</span><span>${aman(metodePembayaran)}</span></div><div class="row"><span>Uang diterima</span><span>${formatRupiah(sale.jumlah_bayar)}</span></div><div class="row"><span>Kembalian</span><span>${formatRupiah(sale.kembalian)}</span></div><hr class="line"><div class="center">Terima kasih telah berbelanja!</div><div class="center muted">Simpan struk ini sebagai bukti pembayaran.</div><script>window.onload=()=>{window.print();window.close()}</script></body></html>`);
   popup.document.close();
 }
 
@@ -323,7 +333,7 @@ export default function KasirPOS() {
         <div className="flex items-center gap-3">
             <button type="button" onClick={() => setSidebarOpen(true)} className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden" aria-label="Buka menu kasir"><Menu className="h-5 w-5" /></button>
             <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-lg shadow-brand-600/20"><Store className="h-5 w-5" /></span>
-            <div><p className="text-lg font-extrabold tracking-tight text-slate-900">Kasir <span className="text-brand-600">Toko Adit</span></p><p className="text-xs text-slate-400">Point of sale · {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div>
+            <div><p className="text-lg font-extrabold tracking-tight text-slate-900">Kasir <span className="text-brand-600">Fashion Store</span></p><p className="text-xs text-slate-400">Point of sale · {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <button type="button" onClick={muat} className="btn-outline !px-3 !py-2" title="Muat ulang data"><RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /><span className="hidden sm:inline">Segarkan</span></button>
@@ -335,7 +345,7 @@ export default function KasirPOS() {
       <main className="mx-auto max-w-[1600px] space-y-6 px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
         <section className="cashier-welcome relative isolate overflow-hidden rounded-[24px] px-5 py-5 text-white shadow-xl sm:flex sm:items-center sm:justify-between sm:px-7">
           <div className="cashier-welcome-orb" />
-          <div className="relative z-10"><span className="text-[10px] font-bold uppercase tracking-[.2em] text-orange-100">Toko Adit · Point of Sale</span><h1 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">Meja kasir siap melayani</h1><p className="mt-1 text-xs text-white/70">Pilih produk, proses pembayaran, lalu cetak struk dengan cepat.</p></div>
+          <div className="relative z-10"><span className="text-[10px] font-bold uppercase tracking-[.2em] text-orange-100">Fashion Store · Point of Sale</span><h1 className="mt-1 text-xl font-extrabold tracking-tight sm:text-2xl">Meja kasir siap melayani</h1><p className="mt-1 text-xs text-white/70">Pilih produk, proses pembayaran, lalu cetak struk dengan cepat.</p></div>
           <div className="relative z-10 mt-4 flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-semibold text-orange-50 backdrop-blur sm:mt-0"><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.9)]" />Kasir aktif</div>
         </section>
         <div className="grid gap-3 sm:grid-cols-3">
@@ -389,7 +399,7 @@ export default function KasirPOS() {
           </aside>
         </div>}
 
-        {activeTab === 'cabang' && <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div className="flex items-start gap-4"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-50 text-brand-600"><Warehouse className="h-6 w-6" /></span><div><h2 className="text-xl font-extrabold text-slate-900">Cabang toko</h2><p className="mt-1 text-sm text-slate-500">Informasi cabang yang melayani transaksi pada perangkat ini.</p></div></div><div className="mt-6 grid gap-4 sm:grid-cols-2"><div className="rounded-xl border border-slate-200 p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-400">Nama cabang</p><p className="mt-2 font-bold text-slate-800">Toko Adit · Pusat</p></div><div className="rounded-xl border border-slate-200 p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-400">Status operasional</p><p className="mt-2 inline-flex items-center gap-2 font-bold text-emerald-700"><span className="h-2 w-2 rounded-full bg-emerald-500" />Aktif</p></div></div><p className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-800">Pengaturan cabang multi-lokasi belum tersedia pada database toko saat ini. POS menggunakan stok produk toko pusat.</p></section>}
+        {activeTab === 'cabang' && <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div className="flex items-start gap-4"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-50 text-brand-600"><Warehouse className="h-6 w-6" /></span><div><h2 className="text-xl font-extrabold text-slate-900">Cabang toko</h2><p className="mt-1 text-sm text-slate-500">Informasi cabang yang melayani transaksi pada perangkat ini.</p></div></div><div className="mt-6 grid gap-4 sm:grid-cols-2"><div className="rounded-xl border border-slate-200 p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-400">Nama cabang</p><p className="mt-2 font-bold text-slate-800">Fashion Store · Pusat</p></div><div className="rounded-xl border border-slate-200 p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-400">Status operasional</p><p className="mt-2 inline-flex items-center gap-2 font-bold text-emerald-700"><span className="h-2 w-2 rounded-full bg-emerald-500" />Aktif</p></div></div><p className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-800">Pengaturan cabang multi-lokasi belum tersedia pada database toko saat ini. POS menggunakan stok produk toko pusat.</p></section>}
 
         {activeTab === 'akun' && <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="border-b border-slate-100 p-5"><h2 className="font-extrabold text-slate-900">Akun Kasir</h2><p className="mt-1 text-xs text-slate-500">Daftar akun kasir yang dapat mengakses meja POS.</p></div><div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="bg-slate-50 text-[10px] uppercase tracking-wide text-slate-400"><tr><th className="px-5 py-3">Nama</th><th className="px-5 py-3">Email</th><th className="px-5 py-3">Hak akses</th><th className="px-5 py-3">Dibuat</th></tr></thead><tbody className="divide-y divide-slate-100">{cashierAccounts.map((account) => <tr key={account.id}><td className="px-5 py-4 font-semibold">{account.name}</td><td className="px-5 py-4 text-slate-500">{account.email}</td><td className="px-5 py-4"><span className="badge bg-emerald-50 text-emerald-700">Kasir</span></td><td className="px-5 py-4 text-slate-500">{account.created_at ? formatDateTime(account.created_at) : '—'}</td></tr>)}{!cashierAccounts.length && <tr><td colSpan={4} className="px-5 py-10 text-center text-slate-400">Memuat atau belum ada akun kasir.</td></tr>}</tbody></table></div><div className="border-t border-slate-100 px-5 py-3 text-xs text-slate-400">Pembuatan akun dan pengaturan sandi dikelola oleh admin toko.</div></section>}
 
@@ -442,5 +452,51 @@ export default function KasirPOS() {
 }
 
 function RingkasanStruk({ sale }) {
-  return <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-slate-300 bg-white p-5 font-mono text-xs text-slate-700"><div className="text-center"><p className="text-lg font-black tracking-widest">TOKO <span className="text-brand-600">ADIT</span></p><p className="mt-1 text-[10px] text-slate-400">JL. MERDEKA NO. 10 · PONOROGO</p></div><div className="my-3 border-t border-dashed border-slate-300" /><div className="space-y-1 text-[10px]"><p>No: <b>{sale.kode_transaksi}</b></p><p>Waktu: {formatDateTime(sale.tanggal_transaksi)}</p><p>Pelanggan: {sale.nama_pelanggan || 'Pelanggan Umum'}</p><p>Kasir: {sale.nama_kasir || '-'}</p></div><div className="my-3 border-t border-dashed border-slate-300" /><div className="space-y-3">{sale.items?.map((item, index) => <div key={`${item.nama_produk}-${index}`}><div className="flex justify-between gap-2"><span className="max-w-[65%] break-words">{item.nama_produk} × {item.jumlah}</span><b>{formatRupiah(item.total_harga)}</b></div><p className="mt-0.5 text-[10px] text-slate-400">@ {formatRupiah(item.harga || item.total_harga / item.jumlah)}</p></div>)}</div><div className="my-3 border-t border-dashed border-slate-300" /><div className="space-y-1.5">{sale.diskon_total > 0 && <><div className="flex justify-between"><span>Subtotal</span><span>{formatRupiah(sale.subtotal || (sale.total_harga + sale.diskon_total))}</span></div><div className="flex justify-between text-emerald-700"><span>Diskon</span><span>− {formatRupiah(sale.diskon_total)}</span></div></>}<div className="flex justify-between text-sm font-black"><span>TOTAL</span><span>{formatRupiah(sale.total_harga)}</span></div><div className="flex justify-between"><span>Bayar ({sale.metode_pembayaran})</span><span>{formatRupiah(sale.jumlah_bayar)}</span></div><div className="flex justify-between"><span>Kembalian</span><span>{formatRupiah(sale.kembalian)}</span></div></div><div className="my-3 border-t border-dashed border-slate-300" /><p className="text-center text-[10px]">Terima kasih telah berbelanja.</p></div>;
+  const items = sale.items || [];
+  const diskon = Number(sale.diskon_total || 0);
+  const subtotal = Number(sale.subtotal ?? (Number(sale.total_harga || 0) + diskon));
+  const totalItem = items.reduce((sum, item) => sum + Number(item.jumlah || 0), 0);
+
+  return (
+    <div className="mx-auto max-w-sm rounded-2xl border border-dashed border-slate-300 bg-white p-5 font-mono text-xs text-slate-700">
+      <div className="text-center">
+        <img src="/logo-emblem.svg" alt="" className="mx-auto mb-2 h-12 w-12 rounded-xl bg-[#20120a] p-1.5 ring-1 ring-amber-800/40" />
+        <p className="text-lg font-black tracking-widest">FASHION <span className="text-amber-700">STORE</span></p>
+        <p className="mt-1 text-[10px] text-slate-500">JL. MERDEKA NO. 10 - PONOROGO</p>
+        <p className="text-[10px] text-slate-500">0812-3456-7891 · halo@tokokita.id</p>
+        <p className="mt-2 font-black tracking-[.2em] text-emerald-700">LUNAS</p>
+      </div>
+      <div className="my-3 border-t border-dashed border-slate-300" />
+      <div className="space-y-1 text-[10px]">
+        <p>No. Transaksi: <b>{sale.kode_transaksi}</b></p>
+        <p>Tanggal: {formatDate(sale.tanggal_transaksi)}</p>
+        <p>Kasir: {sale.nama_kasir || '-'}</p>
+        <p>Pelanggan: {sale.nama_pelanggan || 'Pelanggan Umum'}</p>
+      </div>
+      <div className="my-3 border-t border-dashed border-slate-300" />
+      <p className="mb-2 font-bold">Detail Pembelian ({totalItem} item)</p>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={`${item.nama_produk}-${index}`}>
+            <div className="flex justify-between gap-2">
+              <span className="max-w-[65%] break-words">{item.nama_produk} × {item.jumlah}</span>
+              <b>{formatRupiah(item.total_harga)}</b>
+            </div>
+            <p className="mt-0.5 text-[10px] text-slate-400">@ {formatRupiah(item.harga || item.total_harga / item.jumlah)}</p>
+          </div>
+        ))}
+      </div>
+      <div className="my-3 border-t border-dashed border-slate-300" />
+      <div className="space-y-1.5">
+        <div className="flex justify-between"><span>Subtotal</span><span>{formatRupiah(subtotal)}</span></div>
+        <div className="flex justify-between text-emerald-700"><span>Diskon</span><span>− {formatRupiah(diskon)}</span></div>
+        <div className="flex justify-between border-t border-slate-200 pt-2 text-sm font-black"><span>TOTAL</span><span>{formatRupiah(sale.total_harga)}</span></div>
+        <div className="flex justify-between"><span>Metode pembayaran</span><span>{labelMetodePembayaran(sale.metode_pembayaran)}</span></div>
+        <div className="flex justify-between"><span>Uang diterima</span><span>{formatRupiah(sale.jumlah_bayar)}</span></div>
+        <div className="flex justify-between"><span>Kembalian</span><span>{formatRupiah(sale.kembalian)}</span></div>
+      </div>
+      <div className="my-3 border-t border-dashed border-slate-300" />
+      <p className="text-center text-[10px]">Terima kasih telah berbelanja!</p>
+    </div>
+  );
 }

@@ -18,6 +18,15 @@ return [
         'key' => env('POSTMARK_API_KEY'),
     ],
 
+    'duitku' => [
+        'merchant_code' => env('DUITKU_MERCHANT_CODE'),
+        'api_key' => env('DUITKU_API_KEY'),
+        'base_url' => env('DUITKU_BASE_URL', 'https://api-sandbox.duitku.com'),
+        'status_url' => env('DUITKU_STATUS_URL', 'https://sandbox.duitku.com/webapi/api/merchant/transactionStatus'),
+        'callback_url' => env('DUITKU_CALLBACK_URL'),
+        'return_url' => env('DUITKU_RETURN_URL', env('FRONTEND_URL')),
+    ],
+
     'resend' => [
         'key' => env('RESEND_API_KEY'),
     ],

@@ -9,6 +9,7 @@ import {
   PackageSearch,
   Truck,
   Wallet,
+  ExternalLink,
   XCircle,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -27,10 +28,10 @@ const langkahStatus = [
 
 const instruksiPembayaran = {
   transfer_bank:
-    'Silakan transfer ke rekening BCA 1234567890 a.n. Toko Adit. Setelah melakukan pembayaran, hubungi admin melalui WhatsApp 0812-3456-7891 untuk konfirmasi.',
+    'Silakan transfer ke rekening BCA 1234567890 a.n. Fashion Store. Setelah melakukan pembayaran, hubungi admin melalui WhatsApp 0812-3456-7891 untuk konfirmasi.',
   qris: 'Buka aplikasi pembayaran favoritmu, pilih QRIS, lalu scan kode QR yang dikirim oleh admin. Simpan bukti pembayaran.',
   ewallet:
-    'Kirim pembayaran ke GoPay / OVO / Dana 0812-3456-7891 a.n. Toko Adit, kemudian konfirmasi kepada admin.',
+    'Kirim pembayaran ke GoPay / OVO / Dana 0812-3456-7891 a.n. Fashion Store, kemudian konfirmasi kepada admin.',
   cod: 'Siapkan uang tunai sesuai total pesanan. Pembayaran dilakukan saat kurir menyerahkan barang.',
 };
 
@@ -38,11 +39,14 @@ export default function PesananDetail() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const sukses = searchParams.get('baru') === '1';
+  const kembaliDariPembayaran = searchParams.get('pembayaran') === 'selesai';
+  const resultCode = searchParams.get('resultCode');
 
   const [pesanan, setPesanan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [batalOpen, setBatalOpen] = useState(false);
   const [memproses, setMemproses] = useState(false);
+  const [membuatPembayaran, setMembuatPembayaran] = useState(false);
 
   const muat = useCallback(async () => {
     setLoading(true);
@@ -60,6 +64,24 @@ export default function PesananDetail() {
     muat();
   }, [muat]);
 
+  useEffect(() => {
+    if (!kembaliDariPembayaran) return undefined;
+    let aktif = true;
+    const sinkronkanPembayaran = async () => {
+      if (resultCode === '00') {
+        try {
+          await api.post(`/pesanan-saya/${id}/verifikasi-pembayaran`);
+          if (aktif) toast.success('Pembayaran berhasil diverifikasi.');
+        } catch (error) {
+          if (aktif) toast.error(apiError(error));
+        }
+      }
+      if (aktif) muat();
+    };
+    sinkronkanPembayaran();
+    return () => { aktif = false; };
+  }, [id, kembaliDariPembayaran, resultCode, muat]);
+
   const batalkan = async () => {
     setMemproses(true);
     try {
@@ -71,6 +93,18 @@ export default function PesananDetail() {
       toast.error(apiError(error));
     } finally {
       setMemproses(false);
+    }
+  };
+
+  const lanjutkanPembayaran = async () => {
+    setMembuatPembayaran(true);
+    try {
+      const { data } = await api.post(`/pesanan-saya/${id}/pembayaran`);
+      window.location.assign(data.data.payment_url);
+    } catch (error) {
+      toast.error(apiError(error));
+    } finally {
+      setMembuatPembayaran(false);
     }
   };
 
@@ -209,9 +243,28 @@ export default function PesananDetail() {
                 <p className="text-xs font-bold text-amber-800">
                   Instruksi pembayaran · {metodePembayaran[pesanan.metode_pembayaran]}
                 </p>
-                <p className="mt-1.5 text-xs leading-relaxed text-amber-700">
-                  {instruksiPembayaran[pesanan.metode_pembayaran]}
-                </p>
+                {pesanan.metode_pembayaran === 'cod' ? (
+                  <p className="mt-1.5 text-xs leading-relaxed text-amber-700">
+                    {instruksiPembayaran.cod}
+                  </p>
+                ) : (
+                  <>
+                    <p className="mt-1.5 text-xs leading-relaxed text-amber-700">
+                      Status pembayaran: {pesanan.status_pembayaran === 'dibayar' ? 'Sudah dibayar' : pesanan.status_pembayaran === 'gagal' ? 'Gagal' : 'Menunggu pembayaran'}.
+                    </p>
+                    {pesanan.status_pembayaran !== 'dibayar' && (
+                      <button
+                        type="button"
+                        onClick={lanjutkanPembayaran}
+                        disabled={membuatPembayaran}
+                        className="btn-primary mt-3 py-2 text-xs"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        {membuatPembayaran ? 'Menyiapkan pembayaran...' : 'Bayar dengan Duitku'}
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             )}
           </div>

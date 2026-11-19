@@ -287,6 +287,37 @@ class KasirController extends Controller
             ];
         });
 
-        return response()->json(['message' => 'Transaksi berhasil disimpan.', 'data' => $sale], 201);
+        $rows = DB::table('transaksi as t')
+            ->join('pelanggan as p', 't.id_pelanggan', '=', 'p.id_pelanggan')
+            ->leftJoin('users as u', 't.id_kasir', '=', 'u.id')
+            ->where('t.kode_transaksi', $sale['kode_transaksi'])
+            ->orderBy('t.id_transaksi')
+            ->get([
+                't.kode_transaksi', 't.tanggal_transaksi', 't.nama_produk', 't.jumlah',
+                't.total_harga', 't.diskon', 't.metode_pembayaran', 't.jumlah_bayar',
+                't.kembalian', 'p.nama_pelanggan', 'u.name as nama_kasir',
+            ]);
+
+        $struk = [
+            'kode_transaksi' => $sale['kode_transaksi'],
+            'tanggal_transaksi' => $rows->first()->tanggal_transaksi,
+            'nama_pelanggan' => $rows->first()->nama_pelanggan,
+            'nama_kasir' => $rows->first()->nama_kasir,
+            'metode_pembayaran' => $rows->first()->metode_pembayaran,
+            'subtotal' => (float) $rows->sum(fn ($row) => (float) $row->total_harga + (float) ($row->diskon ?? 0)),
+            'diskon_total' => (float) $rows->sum('diskon'),
+            'total_harga' => (float) $rows->sum('total_harga'),
+            'jumlah_bayar' => (float) $rows->first()->jumlah_bayar,
+            'kembalian' => (float) $rows->first()->kembalian,
+            'items' => $rows->map(fn ($row) => [
+                'nama_produk' => $row->nama_produk,
+                'harga' => ((float) $row->total_harga + (float) ($row->diskon ?? 0)) / (int) $row->jumlah,
+                'jumlah' => (int) $row->jumlah,
+                'total_harga' => (float) $row->total_harga,
+                'diskon' => (float) ($row->diskon ?? 0),
+            ])->values(),
+        ];
+
+        return response()->json(['message' => 'Transaksi berhasil disimpan.', 'data' => $struk], 201);
     }
 }

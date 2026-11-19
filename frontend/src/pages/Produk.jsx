@@ -113,14 +113,14 @@ export default function Produk() {
     <div className="customer-catalog mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
       <div className="customer-catalog-heading flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[.16em] text-brand-700"><Sparkles className="h-3.5 w-3.5" /> Koleksi Toko Adit</span>
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[.16em] text-brand-700"><Sparkles className="h-3.5 w-3.5" /> Koleksi Fashion Store</span>
           <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
             {sort === 'populer' ? 'Produk Terlaris' : 'Produk'}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             {sort === 'populer'
-              ? 'Lihat produk yang paling banyak dibeli pelanggan Toko Adit.'
-              : 'Telusuri seluruh koleksi fashion, sepatu, tas, dan aksesoris Toko Adit.'}
+              ? 'Lihat produk yang paling banyak dibeli pelanggan Fashion Store.'
+              : 'Telusuri seluruh koleksi fashion, sepatu, tas, dan aksesoris Fashion Store.'}
           </p>
         </div>
         <Link

@@ -95,9 +95,20 @@ export default function Checkout() {
         catatan: catatan.trim() || null,
       });
 
+      const orderId = data.data.id_pesanan;
       clearCart();
-      toast.success('Pesanan berhasil dibuat!');
-      navigate(`/pesanan/${data.data.id_pesanan}?baru=1`);
+      if (metode !== 'cod') {
+        try {
+          const payment = await api.post(`/pesanan-saya/${orderId}/pembayaran`);
+          window.location.assign(payment.data.data.payment_url);
+          return;
+        } catch (paymentError) {
+          toast.error(`${apiError(paymentError)} Pesanan tersimpan; pembayaran bisa dicoba dari detail pesanan.`);
+        }
+      } else {
+        toast.success('Pesanan COD berhasil dibuat!');
+      }
+      navigate(`/pesanan/${orderId}?baru=1`);
     } catch (error) {
       toast.error(apiError(error));
     } finally {
